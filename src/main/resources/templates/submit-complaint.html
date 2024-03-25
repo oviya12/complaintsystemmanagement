@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Submit Complaint</title>
+</head>
+<body>
+<h1>Submit Complaint</h1>
+
+<!-- Complaint Submission Form -->
+<form action="#" th:action="@{/submit-complaint}" th:object="${complaint}" method="post">
+    <label for="title">Title:</label>
+    <input type="text" id="title" th:field="*{title}" required/><br/>
+
+    <label for="description">Description:</label><br/>
+    <textarea id="description" th:field="*{description}" required></textarea><br/>
+        <!-- Other form fields -->
+
+        <button type="submit">Submit</button>
+    </form>
+
+    <!-- New input field for encryption key -->
+
+
+    <!-- Check if success message exists -->
+    <!-- Check if success message exists and display it in a dialog box -->
+
+
+
+
+
+</form>
+</body>
+</html>

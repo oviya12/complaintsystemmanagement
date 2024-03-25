@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Page</title>
+</head>
+<body>
+<h1>Welcome Admin!</h1>
+<h2>Complaints</h2>
+<table border="1">
+    <thead>
+    <tr>
+        <th>Title</th>
+        <th>Description</th>
+        <th>Status</th>
+        <th>Action</th>
+    </tr>
+    </thead>
+    <tbody>
+    <!-- Iterate over complaints and display them -->
+    <tr th:each="complaint : ${complaints}">
+        <td th:text="${complaint.title}">Title</td>
+        <td>
+            <a th:href="@{/admin/view-complaint/{id}(id=${complaint.id})}" target="_blank">Click to see complaint</a>
+        </td>
+        <td th:text="${complaint.status}">Status</td>
+        <td>
+            <!-- Form for updating complaint status -->
+            <form th:action="@{/admin/update-status}" method="post">
+                <!-- Hidden input field to send complaint id -->
+                <input type="hidden" name="id" th:value="${complaint.id}">
+                <!-- Select dropdown for status -->
+                <select name="status">
+                    <option value="Resolved">Resolved</option>
+                    <option value="Pending" selected>pending</option>
+                </select>
+                <!-- Submit button to update status -->
+                <button type="submit">Update Status</button>
+            </form>
+        </td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>

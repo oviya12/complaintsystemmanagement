@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Complaint</title>
+</head>
+<body>
+<h1>View Complaint</h1>
+<form th:action="@{/admin/view-complaint/{id}(id=${complaintId})}" method="post">
+    <label for="decryptionKey">Enter Decryption Key:</label>
+    <input type="password" id="decryptionKey" name="decryptionKey">
+    <button type="submit">View Complaint</button>
+</form>
+
+<!-- Display decrypted description if available -->
+<div th:if="${decryptedDescription}">
+    <h2>Decrypted Description:</h2>
+    <p th:text="${decryptedDescription}"></p>
+</div>
+</body>
+</html>

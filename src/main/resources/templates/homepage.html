@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <meta charset="UTF-8">
+    <title>Homepage</title>
+</head>
+<body>
+<h1>Complaint Management System</h1>
+
+<p>Number of Resolved Complaints: <span th:text="${numberOfResolvedComplaints}"></span></p>
+<p>Number of Pending Complaints: <span th:text="${numberOfPendingComplaints}"></span></p>
+
+<a href="/submit-complaint">Create New Complaint</a>
+</body>
+</html>
