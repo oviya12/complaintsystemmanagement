@@ -4,11 +4,97 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Page</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(to bottom, #0f0c29, #302b63, #24243e);
+            color: white;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center; /* Center align content horizontally */
+        }
+
+         h2 {
+            margin: 20px 0;
+        }
+        .button {
+            background: none;
+            border: 1px solid white; /* Add border */
+            color: white;
+            cursor: pointer;
+            text-decoration: none;
+            margin-left: 10px;
+            margin-right: 40px;
+            width: 100px; /* Set width */
+
+            padding: 10px 30px; /* Add padding */
+            border-radius: 5px; /* Add border radius */
+            transition: background-color 0.3s ease; /* Smooth transition */
+        }
+
+        .button:hover {
+            background-color: rgba(255, 255, 255, 0.1); /* Change background color on hover */
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            max-width: 1200px;
+            margin-top: 20px;
+        }
+
+        th, td {
+            border: 1px solid white;
+            padding: 10px;
+
+        }
+
+        th {
+            background-color: #573b8a;
+        }
+
+        td a {
+            color: white;
+            text-decoration: none;
+        }
+
+        td button {
+            background-color: #573b8a;
+            color: white;
+            border: none;
+            margin-left: 40px;
+            padding: 8px 50px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        td button:hover {
+            background-color: #6d44b8;
+        }
+
+        select {
+            padding: 8px 50px;
+            border-radius: 5px;
+        }
+        th:first-child,
+        td:first-child {
+            width: 25%; /* Increase width of first column */
+        }
+
+        th:last-child,
+        td:last-child {
+            width: 40%; /* Reduce width of last column */
+        }
+    </style>
 </head>
 <body>
 <h1>Welcome Admin!</h1>
 <h2>Complaints</h2>
-<table border="1">
+<table>
     <thead>
     <tr>
         <th>Title</th>
@@ -22,7 +108,7 @@
     <tr th:each="complaint : ${complaints}">
         <td th:text="${complaint.title}">Title</td>
         <td>
-            <a th:href="@{/admin/view-complaint/{id}(id=${complaint.id})}" target="_blank">Click to see complaint</a>
+            <a th:href="@{/admin/view-complaint/{id}(id=${complaint.id})}" target="_blank" class="button">Click to see complaint</a>
         </td>
         <td th:text="${complaint.status}">Status</td>
         <td>
@@ -31,10 +117,12 @@
                 <!-- Hidden input field to send complaint id -->
                 <input type="hidden" name="id" th:value="${complaint.id}">
                 <!-- Select dropdown for status -->
-                <select name="status">
-                    <option value="Resolved">Resolved</option>
-                    <option value="Pending" selected>pending</option>
-                </select>
+                <label>
+                    <select name="status">
+                        <option value="Resolved">Resolved</option>
+                        <option value="Pending" selected>pending</option>
+                    </select>
+                </label>
                 <!-- Submit button to update status -->
                 <button type="submit">Update Status</button>
             </form>

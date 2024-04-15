@@ -31,4 +31,7 @@ public class UserService {
         }
         return false;
     }
+    public long getNumberOfUsers() {
+        return userRepository.countAllUsers();
+    }
 }

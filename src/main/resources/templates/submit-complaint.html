@@ -1,23 +1,148 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
     <title>Submit Complaint</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(to bottom, #0f0c29, #302b63, #24243e); /* Background gradient */
+            color: white; /* Text color */
+            min-height: 100vh; /* Minimum height of viewport */
+        }
+        .btn {
+            text-align: center; /* Center align the button */
+            margin-top: 20px; /* Add some margin to the top */
+        }
+
+        .btn button[type="submit"] {
+            padding: 10px 40px; /* Add padding */
+            font-size: 16px; /* Set font size */
+            border: 2px solid #9b9b9b; /* Add border */
+            border-radius: 5px; /* Add border radius */
+            background-color: #573b8a;            color: #fff; /* Button text color */
+            cursor: pointer; /* Change cursor to pointer on hover */
+            transition: background-color 0.3s, color 0.3s; /* Add transition effect */
+        }
+
+        .btn button[type="submit"]:hover {
+
+            background-color: #6d44b8; /* Change background color on hover */
+            /* Background color */
+            color: #fff; /* Change text color on hover */
+        }
+        .title {
+            width: 80%;
+            padding-top: 30px;
+            padding-left: 20px;/* Set width to 80% of the parent container */
+
+        }
+
+        .title label {
+            font-size: 20px;
+        }
+
+        .title input[type="text"] {
+            width: 50%; /* Set width to 100% of the container */
+            height: 50px; /* Increase height to 50px */
+            box-sizing: border-box; /* Include padding and border in the width */
+            border: 2px solid #ccc; /* Add border */
+            border-radius: 5px; /* Add border radius */
+            padding: 10px; /* Add padding */
+            font-size: 16px; /* Set font size */
+            color: #0a0a0a; /* Text color */
+            background-color: #9b9b9b; /* Change background color */
+        }
+
+        .desc {
+            width: 100%;
+            padding-top: 30px;
+            padding-left: 20px;/* Set width to 80% of the parent container */
+        }
+
+        .desc label {
+            font-size: 20px;
+        }
+        .desc textarea {
+            width: 90%; /* Set width to 100% of the container */
+            height: 200px; /* Set height to 200px */
+            box-sizing: border-box;
+            border: 2px solid #ccc; /* Add border */
+            border-radius: 5px; /* Add border radius */
+            padding: 10px; /* Add padding */
+            font-size: 16px; /* Set font size */
+            color: #0a0a0a; /* Text color */
+            background-color: #9b9b9b; /* Change background color *//* Include padding and border in the width */
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 5px;
+            border-bottom: 1px solid white; /* Border bottom */
+        }
+
+        .header h1 {
+            margin: 20px;
+        }
+        .button {
+            background: none;
+            border: 1px solid white; /* Add border */
+            color: white;
+            cursor: pointer;
+            text-decoration: none;
+            margin-left: 10px;
+            margin-right: 40px;
+            width: 100px; /* Set width */
+
+            padding: 10px 30px; /* Add padding */
+            border-radius: 5px; /* Add border radius */
+            transition: background-color 0.3s ease; /* Smooth transition */
+        }
+
+        .button:hover {
+            background-color: rgba(255, 255, 255, 0.1); /* Change background color on hover */
+        }
+
+    </style>
 </head>
 <body>
-<h1>Submit Complaint</h1>
+<div class="header">
+    <h1>SUBMIT COMPLAINT</h1>
+    <div>
+        <a href="/homepage" class="button">Return to home</a>
+        <a href="/helpline" class="button">Helpline</a>
+        <a href="/contact" class="button">Contact Us</a>
+
+    </div>
+</div>
 
 <!-- Complaint Submission Form -->
+<div class="content">
 <form action="#" th:action="@{/submit-complaint}" th:object="${complaint}" method="post">
-    <label for="title">Title:</label>
+    <div class="title">
+    <label  for="title">Subject:</label>
+        <br><br>
     <input type="text" id="title" th:field="*{title}" required/><br/>
-
-    <label for="description">Description:</label><br/>
+    </div>
+    <div class="desc">
+    <label for="description">Describe Your Complaint:   (Please mention all the necessary details (Date of Occurrence,Place,Time, Person Involved,etc,...If Any) </label><br/>
+        <br><br>
     <textarea id="description" th:field="*{description}" required></textarea><br/>
         <!-- Other form fields -->
+    </div><br><br>
+    <div class="btn">
+        <button type="submit">Submit</button></div>
 
-        <button type="submit">Submit</button>
     </form>
+</div>
+
+
+</body>
+</html>
+
 
     <!-- New input field for encryption key -->
 
@@ -28,7 +153,3 @@
 
 
 
-
-</form>
-</body>
-</html>

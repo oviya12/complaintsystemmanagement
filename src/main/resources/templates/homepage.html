@@ -1,15 +1,162 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" >
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Homepage</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(to bottom, #0f0c29, #302b63, #24243e); /* Background gradient */
+            color: white; /* Text color */
+            min-height: 100vh; /* Minimum height of viewport */
+            display: flex;
+            flex-direction: column; /* Arrange elements in column */
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 5px;
+            border-bottom: 1px solid white; /* Border bottom */
+        }
+
+        .header h1 {
+            margin: 20px;
+        }
+
+        .button {
+            background: none;
+            border: 1px solid white; /* Add border */
+            color: white;
+            cursor: pointer;
+            text-decoration: none;
+            margin-left: 10px;
+            margin-right: 40px;
+            width: 100px; /* Set width */
+
+            padding: 10px 30px; /* Add padding */
+            border-radius: 5px; /* Add border radius */
+            transition: background-color 0.3s ease; /* Smooth transition */
+        }
+
+        .button:hover {
+            background-color: rgba(255, 255, 255, 0.1); /* Change background color on hover */
+        }
+
+        h1 {
+            text-align: left; /* Align left */
+            margin-left: 20px; /* Add margin to left */
+        }
+
+        .content {
+            padding: 30px; /* Add padding */
+            flex-grow: 1; /* Allow content to grow and fill remaining space */
+        }
+
+        .image-container {
+            position: fixed; /* Fix position */
+            top: 150px; /* Position from the top */
+            right: 0; /* Position from the right */
+            width: 40%; /* Set width of the container */
+            height: 70vh; /* Set height of the container to 50% of the viewport height */
+            overflow: hidden; /* Hide overflow */
+        }
+
+        /* New styles for the image */
+        .page-image {
+            width: auto; /* Make the image width adjust to its height */
+            height: 100%; /* Make the image fill the container height */
+            display: block; /* Ensure the image is displayed as a block */
+            margin: 0 auto; /* Center the image horizontally */
+        }
+
+        .complaint-box {
+            background-color: #573b8a; /* Background color */
+            color: white; /* Text color */
+            padding: 10px; /* Add padding */
+            border-radius: 5px; /* Add border radius */
+            margin-bottom: 20px; /* Add margin to bottom */
+            display: inline-block; /* Display inline-block */
+            width: 200px; /* Set width */
+            margin-top: 50px;
+            transition: transform 0.2s ease, box-shadow 0.2s ease; /* Add transition */
+
+        }
+
+        .complaint-box h2 {
+            margin-top: 10px; /* Remove top margin for h2 */
+        }
+        .complaint-box:hover, .user-box:hover {
+            transform: scale(1.1); /* Zoom in by 10% on hover */
+            box-shadow: 0px 5px 15px rgb(10, 10, 10);
+        }
+
+
+        .complaint-box.resolved {
+            background-color: #219375; /* Resolved complaints background color */
+        }
+        .complaint-box.user-box{
+            background-color: #1e7185;
+            margin-left: 50px;
+
+
+        }
+
+        .complaint-box.pending {
+            background-color: #be1a2e;
+            margin-left: 50px;/* Pending complaints background color */
+        }
+
+        .create-complaint {
+            margin-bottom: 200px; /* Add margin to bottom */
+            margin-left: 50px; /* Add margin to left */
+        }
+
+        .create-complaint a {
+            background-color: #573b8a; /* Background color */
+            color: white; /* Text color */
+            padding: 20px 30px; /* Add padding */
+            border-radius: 5px; /* Add border radius */
+            text-decoration: none;
+            /* Remove underline */
+            transition: background-color 0.3s ease; /* Smooth transition */
+        }
+
+        .create-complaint a:hover {
+            background-color: #6d44b8; /* Change background color on hover */
+        }
+    </style>
 </head>
 <body>
-<h1>Complaint Management System</h1>
+<div class="header">
+    <h1>Complaint Registration Portal</h1>
+    <div>
+        <a href="/helpline" class="button">Helpline</a>
+        <a href="/contact" class="button">Contact Us</a>
+    </div>
+</div>
 
-<p>Number of Resolved Complaints: <span th:text="${numberOfResolvedComplaints}"></span></p>
-<p>Number of Pending Complaints: <span th:text="${numberOfPendingComplaints}"></span></p>
+<div class="content">
+    <h2>WELCOME, Please Register Your Complaint below!</h2>
+    <div class="complaint-box resolved">
+        <h2>Resolved Complaints</h2>
+        <p><span th:text="${numberOfResolvedComplaints}">0</span></p>
+    </div><div class="complaint-box pending">
+        <h2>Pending Complaints</h2>
+        <p><span th:text="${numberOfPendingComplaints}">0</span></p>
+    </div><div class="complaint-box user-box">
+        <h2>Total Trusted Users</h2>
+        <p><span th:text="${numberOfUsers}">0</span></p>
+    </div><div class="image-container">
+    <img src="image.png" alt="Large Image" class="page-image">
+</div>
+</div>
 
-<a href="/submit-complaint">Create New Complaint</a>
+<div class="create-complaint">
+    <a href="/submit-complaint">Create New Complaint</a>
+</div>
 </body>
 </html>

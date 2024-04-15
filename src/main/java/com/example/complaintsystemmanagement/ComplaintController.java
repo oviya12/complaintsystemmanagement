@@ -41,10 +41,10 @@ public class ComplaintController {
     public String showHomePage(Model model) {
         int numberOfResolvedComplaints = complaintService.getNumberOfResolvedComplaints();
         int numberOfPendingComplaints = complaintService.getNumberOfPendingComplaints();
-
+        long numberOfUsers = userService.getNumberOfUsers();
         model.addAttribute("numberOfResolvedComplaints", numberOfResolvedComplaints);
         model.addAttribute("numberOfPendingComplaints", numberOfPendingComplaints);
-
+        model.addAttribute("numberOfUsers", numberOfUsers);
         return "homepage";
     }
 
@@ -53,6 +53,17 @@ public class ComplaintController {
         model.addAttribute("complaint", new Complaint());
         return "submit-complaint";
     }
+    @GetMapping("/contact")
+    public String contact(Model model) {
+        model.addAttribute("pageTitle", "Contact Us");
+        return "contact"; // Assuming you have a contact.html template
+    }
+    @GetMapping("/helpline")
+    public String helpline(Model model) {
+        model.addAttribute("pageTitle", "Helpline");
+        return "helpline"; // Assuming you have a contact.html template
+    }
+
 
     @PostMapping("/submit-complaint")
     public String submitComplaint(@ModelAttribute("complaint") Complaint complaint) {
@@ -71,15 +82,23 @@ public class ComplaintController {
         return "admin";
     }
 
-    @PostMapping("/update-status")
+    @PostMapping("/admin/update-status")
     public String updateComplaintStatus(@RequestParam("id") Long id, @RequestParam("status") String status) {
         complaintService.updateComplaintStatus(id, status);
         return "redirect:/admin";
     }
 
+
     @GetMapping("/admin/view-complaint/{id}")
     public String viewComplaint(@PathVariable Long id, Model model) {
-        model.addAttribute("complaintId", id);
+        try {
+            Complaint complaint = complaintService.getComplaintById(id);
+            Complaint decryptedComplaint = complaintService.decryptComplaintDescription(complaint);
+            model.addAttribute("complaint", decryptedComplaint);
+        } catch (Exception e) {
+            // Handle exception
+            return "error";
+        }
         return "view-complaint";
     }
 
@@ -87,8 +106,10 @@ public class ComplaintController {
     public String viewComplaint(@PathVariable Long id, @RequestParam("decryptionKey") String decryptionKey, Model model) {
         try {
             Complaint complaint = complaintService.getComplaintById(id);
-            String decryptedDescription = complaintService.decryptComplaintDescription(complaint.getDescription(), decryptionKey);
-            model.addAttribute("decryptedDescription", decryptedDescription);
+            complaint = complaintService.decryptComplaintDescription(complaint);
+            model.addAttribute("complaint", complaint); // Add decrypted complaint to model
+
+
         } catch (Exception e) {
             // Handle decryption error
             return "error";

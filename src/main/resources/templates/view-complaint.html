@@ -4,19 +4,71 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>View Complaint</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(to bottom, #0f0c29, #302b63, #24243e);
+            color: white;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .title {
+            font-size: 24px;
+            margin: 20px 0;
+        }
+
+        .complaint-details {
+            width: 80%;
+            max-width: 800px;
+            margin-top: 20px;
+            border-collapse: collapse;
+        }
+
+        .complaint-details th, .complaint-details td {
+            border: 1px solid white;
+            padding: 10px;
+            text-align: left;
+        }
+
+        .complaint-details th {
+            background-color: #573b8a;
+            color: white;
+        }
+        th:first-child,
+        td:first-child {
+            width: 10%; /* Increase width of first column */
+        }
+
+        th:last-child,
+        td:last-child {
+            width: 40%; /* Reduce width of last column */
+        }
+
+
+    </style>
 </head>
 <body>
-<h1>View Complaint</h1>
-<form th:action="@{/admin/view-complaint/{id}(id=${complaintId})}" method="post">
-    <label for="decryptionKey">Enter Decryption Key:</label>
-    <input type="password" id="decryptionKey" name="decryptionKey">
-    <button type="submit">View Complaint</button>
-</form>
+<h1>Decrypted Complaint Details</h1>
 
-<!-- Display decrypted description if available -->
-<div th:if="${decryptedDescription}">
-    <h2>Decrypted Description:</h2>
-    <p th:text="${decryptedDescription}"></p>
-</div>
+<table class="complaint-details" th:if="${complaint}">
+    <thead>
+    <tr>
+        <th>Complaint ID</th>
+        <th>Description</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td th:text="${complaint.id}"></td>
+        <td th:text="${complaint.description}"></td>
+    </tr>
+    </tbody>
+</table>
+
 </body>
 </html>

@@ -10,7 +10,7 @@ public class Complaint {
     private Long id;
     @Column(name = "title")
     private String title;
-    @Column(name = "description")
+    @Column(length = Integer.MAX_VALUE)
     private String description;
     @Column(name = "status")
     private String status;

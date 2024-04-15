@@ -1,17 +1,18 @@
 package com.example.complaintsystemmanagement;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import javax.crypto.Cipher;
+import javax.crypto.KeyGenerator;
+import javax.crypto.SecretKey;
 import org.bouncycastle.crypto.BufferedBlockCipher;
 import org.bouncycastle.crypto.InvalidCipherTextException;
 import org.bouncycastle.crypto.engines.TwofishEngine;
 import org.bouncycastle.crypto.paddings.PKCS7Padding;
 import org.bouncycastle.crypto.paddings.PaddedBufferedBlockCipher;
 import org.bouncycastle.crypto.params.KeyParameter;
-import org.bouncycastle.jce.provider.BouncyCastleProvider;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import java.nio.charset.StandardCharsets;
-import java.security.Security;
+import java.security.NoSuchAlgorithmException;
 import java.util.Base64;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -22,7 +23,18 @@ public class ComplaintService {
     @Autowired
     private ComplaintRepository complaintRepository;
 
-    private static final String DEFAULT_ENCRYPTION_KEY = "YourDefaultEncryptionKey";
+    private static SecretKey aesSecretKey;
+
+    static {
+        try {
+            // Generate AES secret key
+            KeyGenerator keyGenerator = KeyGenerator.getInstance("AES");
+            keyGenerator.init(256); // Key size 256 bits
+            aesSecretKey = keyGenerator.generateKey();
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+    }
 
     public List<Complaint> getAllComplaints() {
         return complaintRepository.findAll();
@@ -41,9 +53,9 @@ public class ComplaintService {
 
     public Complaint createComplaint(Complaint complaint) throws Exception {
         complaint.setStatus("Pending");
-        Security.addProvider(new BouncyCastleProvider());
-        String encryptedDescription = encrypt(complaint.getDescription());
-        complaint.setDescription(encryptedDescription);
+
+        String twofishEncryptedDescription = encryptWithTwofish(complaint.getDescription());
+        complaint.setDescription(twofishEncryptedDescription);
         return complaintRepository.save(complaint);
     }
 
@@ -54,10 +66,11 @@ public class ComplaintService {
                 .collect(Collectors.toList());
     }
 
-    private static String encrypt(String description) throws Exception {
+
+    private String encryptWithTwofish(String description) throws Exception {
         TwofishEngine twofishEngine = new TwofishEngine();
         BufferedBlockCipher cipher = new PaddedBufferedBlockCipher(twofishEngine, new PKCS7Padding());
-        KeyParameter key = new KeyParameter(DEFAULT_ENCRYPTION_KEY.getBytes());
+        KeyParameter key = new KeyParameter(aesSecretKey.getEncoded());
         cipher.init(true, key);
         byte[] input = description.getBytes(StandardCharsets.UTF_8);
         byte[] output = new byte[cipher.getOutputSize(input.length)];
@@ -68,21 +81,19 @@ public class ComplaintService {
 
     public Complaint decryptComplaintDescription(Complaint complaint) {
         try {
-            String encryptionKey = DEFAULT_ENCRYPTION_KEY;
-            String decryptedDescription = decryptComplaintDescription(complaint.getDescription(), encryptionKey);
-            complaint.setDescription(decryptedDescription);
-        } catch (InvalidCipherTextException e) {
-            e.printStackTrace(); // Handle decryption error
+            String twofishDecryptedDescription = decryptWithTwofish(complaint.getDescription());
+
+            complaint.setDescription(twofishDecryptedDescription);
         } catch (Exception e) {
-            e.printStackTrace();
+            e.printStackTrace(); // Handle decryption error
         }
         return complaint;
     }
 
-    public static String decryptComplaintDescription(String encryptedDescription, String encryptionKey) throws Exception {
+    private String decryptWithTwofish(String encryptedDescription) throws Exception {
         TwofishEngine twofishEngine = new TwofishEngine();
-        BufferedBlockCipher cipher = new PaddedBufferedBlockCipher(twofishEngine);
-        KeyParameter key = new KeyParameter(encryptionKey.getBytes());
+        BufferedBlockCipher cipher = new PaddedBufferedBlockCipher(twofishEngine, new PKCS7Padding());
+        KeyParameter key = new KeyParameter(aesSecretKey.getEncoded());
         cipher.init(false, key);
         byte[] input = Base64.getDecoder().decode(encryptedDescription);
         byte[] output = new byte[cipher.getOutputSize(input.length)];
@@ -90,6 +101,8 @@ public class ComplaintService {
         processed += cipher.doFinal(output, processed);
         return new String(output, 0, processed).trim(); // Trim any additional whitespace
     }
+
+
 
     public int getNumberOfResolvedComplaints() {
         return complaintRepository.countByStatus("Resolved");
