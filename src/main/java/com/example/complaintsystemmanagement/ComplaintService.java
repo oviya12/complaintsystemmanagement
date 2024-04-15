@@ -15,6 +15,7 @@ import java.nio.charset.StandardCharsets;
 import java.security.NoSuchAlgorithmException;
 import java.util.Base64;
 import java.util.List;
+import java.util.Random;
 import java.util.stream.Collectors;
 
 @Service
@@ -53,6 +54,15 @@ public class ComplaintService {
 
     public Complaint createComplaint(Complaint complaint) throws Exception {
         complaint.setStatus("Pending");
+        // Generate a random 6-digit ID
+        Random random = new Random();
+        long id = 100000 + random.nextInt(900000); // Generates a random number between 100000 and 999999
+
+        while(complaintRepository.existsById(id)) {
+            id = 100000 + random.nextInt(900000); // Regenerate ID if it already exists
+        }
+        complaint.setId(id);
+
 
         String twofishEncryptedDescription = encryptWithTwofish(complaint.getDescription());
         complaint.setDescription(twofishEncryptedDescription);
@@ -100,6 +110,13 @@ public class ComplaintService {
         int processed = cipher.processBytes(input, 0, input.length, output, 0);
         processed += cipher.doFinal(output, processed);
         return new String(output, 0, processed).trim(); // Trim any additional whitespace
+    }
+    public class RandomIdGenerator {
+        public static int generateRandomId() {
+            Random rand = new Random();
+            // Generate a random number between 100000 and 999999
+            return rand.nextInt(900000) + 100000;
+        }
     }
 
 
