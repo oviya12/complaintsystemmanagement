@@ -77,17 +77,7 @@ public class ComplaintService {
     }
 
 
-    private String encryptWithTwofish(String description) throws Exception {
-        TwofishEngine twofishEngine = new TwofishEngine();
-        BufferedBlockCipher cipher = new PaddedBufferedBlockCipher(twofishEngine, new PKCS7Padding());
-        KeyParameter key = new KeyParameter(aesSecretKey.getEncoded());
-        cipher.init(true, key);
-        byte[] input = description.getBytes(StandardCharsets.UTF_8);
-        byte[] output = new byte[cipher.getOutputSize(input.length)];
-        int processed = cipher.processBytes(input, 0, input.length, output, 0);
-        processed += cipher.doFinal(output, processed);
-        return Base64.getEncoder().encodeToString(output);
-    }
+
 
     public Complaint decryptComplaintDescription(Complaint complaint) {
         try {
@@ -100,6 +90,17 @@ public class ComplaintService {
         return complaint;
     }
 
+    private String encryptWithTwofish(String description) throws Exception {
+        TwofishEngine twofishEngine = new TwofishEngine();
+        BufferedBlockCipher cipher = new PaddedBufferedBlockCipher(twofishEngine, new PKCS7Padding());
+        KeyParameter key = new KeyParameter(aesSecretKey.getEncoded());
+        cipher.init(true, key);
+        byte[] input = description.getBytes(StandardCharsets.UTF_8);
+        byte[] output = new byte[cipher.getOutputSize(input.length)];
+        int processed = cipher.processBytes(input, 0, input.length, output, 0);
+        processed += cipher.doFinal(output, processed);
+        return Base64.getEncoder().encodeToString(output);
+    }
     private String decryptWithTwofish(String encryptedDescription) throws Exception {
         TwofishEngine twofishEngine = new TwofishEngine();
         BufferedBlockCipher cipher = new PaddedBufferedBlockCipher(twofishEngine, new PKCS7Padding());
