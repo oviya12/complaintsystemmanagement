@@ -63,6 +63,17 @@ public class ComplaintController {
         model.addAttribute("pageTitle", "Helpline");
         return "helpline"; // Assuming you have a contact.html template
     }
+    @GetMapping("/capture-selfie")
+    public String capture(Model model) {
+        model.addAttribute("pageTitle", "Capture Selfie");
+        return "capture-selfie"; // Assuming you have a contact.html template
+    }
+    @GetMapping("/verify")
+    public String verify(Model model) {
+        model.addAttribute("pageTitle", "Verify User");
+        return "verify"; // Assuming you have a contact.html template
+    }
+
 
 
     @PostMapping("/submit-complaint")

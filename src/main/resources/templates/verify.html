@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>USER DETAILS</title>
+</head>
+<body>
+<h1>USER DETAILS</h1>
+<button id="verify-btn">Verify User</button> <!-- New button for user verification -->
+<div id="user-image-container"></div> <!-- Container to display decrypted image -->
+
+<script>
+    const verifyBtn = document.getElementById('verify-btn'); // New button ID for user verification
+    const userImageContainer = document.getElementById('user-image-container');
+
+    verifyBtn.addEventListener('click', () => { // Event listener for user verification
+        const selfieId = prompt('Enter the selfie ID:');
+        if (selfieId) {
+            fetch(`/selfie/${selfieId}`, {
+                method: 'GET',
+            })
+                .then(response => response.blob())
+                .then(blob => {
+                    const objectURL = URL.createObjectURL(blob);
+                    displayDecryptedImage(objectURL);
+                })
+                .catch(error => {
+                    console.error('Error decrypting selfie:', error);
+                });
+        } else {
+            alert('Please enter a valid selfie ID.');
+        }
+    });
+
+    function displayDecryptedImage(imageURL) {
+        const img = new Image();
+        img.src = imageURL;
+        userImageContainer.innerHTML = ''; // Clear previous image
+        userImageContainer.appendChild(img);
+    }
+</script>
+
+</body>
+</html>

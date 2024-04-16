@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Selfie Capture</title>
+</head>
+<body>
+<h1>Selfie Capture</h1>
+<video id="video" width="640" height="480" autoplay></video><br>
+<button id="capture-btn">Capture</button><br>
+<canvas id="canvas" width="640" height="480"></canvas><br>
+<button id="save-btn">Save Selfie</button><br>
+<!-- New button for user verification -->
+<div id="user-image-container"></div> <!-- Container to display decrypted image -->
+<script>
+    const video = document.getElementById('video');
+    const canvas = document.getElementById('canvas');
+    const captureBtn = document.getElementById('capture-btn');
+    const saveBtn = document.getElementById('save-btn');
+
+
+    navigator.mediaDevices.getUserMedia({ video: true })
+        .then(stream => {
+            video.srcObject = stream;
+        })
+        .catch(err => {
+            console.error('Error accessing webcam:', err);
+        });
+
+    captureBtn.addEventListener('click', () => {
+        canvas.getContext('2d').drawImage(video, 0, 0, canvas.width, canvas.height);
+    });
+
+    saveBtn.addEventListener('click', () => {
+        const selfieData = canvas.toDataURL('image/png');
+        recognizeAndSaveSelfie(selfieData);
+    });
+
+
+
+    function recognizeAndSaveSelfie(selfieData) {
+        recognizeFace(selfieData)
+            .then(response => {
+                if (response.ok) {
+                    return saveSelfie(selfieData);
+                } else {
+                    alert('Failed to recognize face.');
+                    clearCanvas();
+                }
+            })
+            .catch(error => {
+                console.error('Error recognizing face:', error);
+                clearCanvas();
+            });
+    }
+
+    function saveSelfie(selfieData) {
+        return fetch('/selfie', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ selfieData: selfieData }) // Sending the selfie data to the backend
+        })
+            .then(response => {
+                if (response.ok) {
+                    alert('Selfie captured and saved successfully!');
+                    window.location.href = '/submit-complaint';
+                } else {
+                    alert('Failed to capture and save selfie.');
+                }
+            })
+            .catch(error => {
+                console.error('Error capturing and saving selfie:', error);
+            });
+    }
+
+    function recognizeFace(selfieData) { // New function to send image for face recognition
+        return fetch('/recognize-face', {
+            method: 'POST',
+            body: selfieData // Sending the image data to the backend for face recognition
+        });
+    }
+
+    function clearCanvas() {
+        const context = canvas.getContext('2d');
+        context.clearRect(0, 0, canvas.width, canvas.height);
+    }
+</script>
+</body>
+</html>

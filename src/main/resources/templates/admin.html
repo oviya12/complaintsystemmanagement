@@ -27,8 +27,8 @@
             cursor: pointer;
             text-decoration: none;
             margin-left: 10px;
-            margin-right: 40px;
-            width: 100px; /* Set width */
+            margin-right: 10px;
+            width: 10px; /* Set width */
 
             padding: 10px 30px; /* Add padding */
             border-radius: 5px; /* Add border radius */
@@ -42,7 +42,7 @@
         table {
             border-collapse: collapse;
             width: 100%;
-            max-width: 1200px;
+            max-width: 1500px;
             margin-top: 20px;
         }
 
@@ -67,8 +67,8 @@
             background-color: #573b8a;
             color: white;
             border: none;
-            margin-left: 40px;
-            padding: 8px 50px;
+            margin-left: 8px;
+            padding: 8px 40px;
             border-radius: 5px;
             cursor: pointer;
             transition: background-color 0.3s ease;
@@ -84,12 +84,12 @@
         }
         th:first-child,
         td:first-child {
-            width: 25%; /* Increase width of first column */
+            width: 15%; /* Increase width of first column */
         }
 
         th:last-child,
         td:last-child {
-            width: 40%; /* Reduce width of last column */
+            width: 10%; /* Reduce width of last column */
         }
     </style>
 </head>
@@ -99,10 +99,11 @@
 <table>
     <thead>
     <tr>
-        <th>Title</th>
-        <th>Description</th>
-        <th>Status</th>
-        <th>Action</th>
+        <th style="width: 100px;">Title</th>
+        <th style="width: 100px;">Description</th>
+        <th style="width: 80px;">Status</th>
+        <th style="width: 100px;">Action</th>
+        <th style="width: 100px;">Verify User</th>
     </tr>
     </thead>
     <tbody>
@@ -128,6 +129,9 @@
                 <!-- Submit button to update status -->
                 <button type="submit">Update Status</button>
             </form>
+        </td>
+        <td>
+            <a href="/verify" >Verify User</a>
         </td>
     </tr>
     </tbody>
