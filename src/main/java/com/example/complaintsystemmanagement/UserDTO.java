@@ -1,22 +1,21 @@
 package com.example.complaintsystemmanagement;
 
-import jakarta.persistence.*;
-
-@Entity
-@Table(name = "users")
-public class User {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class UserDTO {
     private Long id;
-
     private String username;
-
-    private String password;
-    private String address; // New field
-    private String phoneNumber; // New field
+    private String address;
+    private String phoneNumber;
     private String email;
-    public long getId(){
+
+    // Constructor
+
+    // Getters and setters
+    public Long getId() {
         return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getUsername() {
@@ -27,13 +26,6 @@ public class User {
         this.username = username;
     }
 
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
     public String getAddress() {
         return address;
     }

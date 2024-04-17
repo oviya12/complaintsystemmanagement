@@ -2,16 +2,74 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>USER DETAILS</title>
+    <title>User Details</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(to bottom, #0f0c29, #302b63, #24243e); /* Background gradient */
+            color: white; /* Text color */
+            min-height: 100vh; /* Minimum height of viewport */
+            display: flex;
+            align-items: center; /* Center align items vertically */
+            flex-direction: column; /* Arrange elements in column */
+        }
+
+        h1 {
+            text-align: center; /* Center align heading */
+           /* Add margin on top */
+        }
+
+        button {
+            background-color: #573b8a; /* Button background color */
+            margin-top: 30px;
+            color: white; /* Button text color */
+            padding: 10px 20px; /* Button padding */
+            border: none; /* Remove button border */
+            border-radius: 5px; /* Add border radius */
+            cursor: pointer; /* Change cursor to pointer on hover */
+            transition: background-color 0.3s ease; /* Smooth transition */
+            margin-bottom: 20px; /* Add margin at the bottom */
+        }
+
+        button:hover {
+            background-color: #6d44b8; /* Change button background color on hover */
+        }
+
+        #user-image-container {
+            margin-bottom: 20px; /* Add margin at the bottom */
+        }
+
+        #user-image-container img {
+            max-width: 100%; /* Set maximum width for the image */
+            height: auto; /* Maintain aspect ratio */
+            border-radius: 5px; /* Add border radius */
+        }
+
+        #user-details-container {
+            text-align: left; /* Align user details to the left */
+        }
+
+        #user-details-container h2 {
+            margin-top: 20px; /* Add margin on top */
+        }
+
+        #user-details-container p {
+            margin-bottom: 10px; /* Add margin at the bottom */
+        }
+    </style>
 </head>
 <body>
-<h1>USER DETAILS</h1>
+<h1>User Details</h1>
 <button id="verify-btn">Verify User</button> <!-- New button for user verification -->
 <div id="user-image-container"></div> <!-- Container to display decrypted image -->
+<div id="user-details-container"></div> <!-- Container to display user details -->
 
 <script>
-    const verifyBtn = document.getElementById('verify-btn'); // New button ID for user verification
+    const verifyBtn = document.getElementById('verify-btn'); // Button ID for user verification
     const userImageContainer = document.getElementById('user-image-container');
+    const userDetailsContainer = document.getElementById('user-details-container');
 
     verifyBtn.addEventListener('click', () => { // Event listener for user verification
         const selfieId = prompt('Enter the selfie ID:');
@@ -23,6 +81,7 @@
                 .then(blob => {
                     const objectURL = URL.createObjectURL(blob);
                     displayDecryptedImage(objectURL);
+                    fetchUserDetails(selfieId); // Fetch user details after displaying image
                 })
                 .catch(error => {
                     console.error('Error decrypting selfie:', error);
@@ -33,10 +92,41 @@
     });
 
     function displayDecryptedImage(imageURL) {
+        verifyBtn.style.display = 'none';
         const img = new Image();
         img.src = imageURL;
         userImageContainer.innerHTML = ''; // Clear previous image
         userImageContainer.appendChild(img);
+    }
+
+    // Function to fetch user details from the backend
+    function fetchUserDetails(userId) {
+        fetch(`/api/users/${userId}`)
+            .then(response => {
+                if (response.ok) {
+                    return response.json(); // Parse response JSON data
+                } else {
+                    throw new Error('Failed to fetch user details');
+                }
+            })
+            .then(user => {
+                // Display user details in the HTML
+                displayUserDetails(user);
+            })
+            .catch(error => {
+                console.error('Error fetching user details:', error);
+            });
+    }
+
+    // Function to display user details in the HTML
+    function displayUserDetails(user) {
+        userDetailsContainer.innerHTML = `
+            <h2>User Details</h2>
+            <p><strong>Username:</strong> ${user.username}</p>
+            <p><strong>Email:</strong> ${user.email}</p>
+            <p><strong>Address:</strong> ${user.address}</p>
+            <p><strong>Phone Number:</strong> ${user.phoneNumber}</p>
+        `;
     }
 </script>
 

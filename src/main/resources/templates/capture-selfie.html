@@ -4,13 +4,117 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Selfie Capture</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(to bottom, #0f0c29, #302b63, #24243e); /* Background gradient */
+            color: white; /* Text color */
+            min-height: 100vh; /* Minimum height of viewport */
+            display: flex;
+
+
+
+        }
+        .left{
+            flex-direction: column; /* Arrange elements in column */
+            padding:20px 30px;
+        }
+
+        h1 {
+
+            margin-top: 20px; /* Add margin on top */
+        }
+
+        #video-container {
+            width: 100%; /* Set width of video container */
+            position: relative; /* Position relative for absolute positioning */
+            margin-bottom: 20px; /* Add margin at the bottom */
+        }
+
+        #video {
+            width: 100%; /* Set width of video element */
+            display: block; /* Make video element block-level */
+            border-radius: 5px;
+            margin-bottom: 20px;/* Add border radius */
+        }
+
+        #capture-btn {
+            display: block;
+            margin: 0 auto; /* Center the capture button horizontally */
+            background-color: #573b8a; /* Background color */
+            color: white; /* Text color */
+            padding: 10px 50px; /* Add padding */
+            border-radius: 5px; /* Add border radius */
+            text-decoration: none;
+            font-size: 20px;
+            /* Remove underline */
+            transition: background-color 0.3s ease; /* Smooth transition */
+
+            border: none; /* Remove button border */
+
+            cursor: pointer; /* Change cursor to pointer on hover */
+
+        }
+
+        #capture-btn:hover {
+            background-color: #6d44b8; /* Change button background color on hover */
+        }
+
+        #canvas-container-wrapper {
+            width: 50%; /* Set width of canvas container */
+            position: relative; /* Position relative for absolute positioning */
+            margin-bottom: 20px; /* Add margin at the bottom */
+            margin-top: 20px; /* Add margin at the top */
+            margin-right: 20px; /* Add margin from the right side */
+        }
+
+        #canvas-container {
+            width: 100%; /* Set width of canvas container */
+            position: relative;/* Position relative for absolute positioning */
+        }
+
+        #canvas {
+            width: 100%; /* Set width of canvas */
+            height: auto; /* Let the height adjust proportionally to the width */
+            display: none; /* Hide canvas by default */
+            border-radius: 5px;
+            margin-bottom: 20px;/* Add border radius */
+        }
+
+        #save-btn {
+            display: none; /* Hide save button by default */
+            font-size: 20px;
+            margin: 0 auto; /* Center the save button horizontally */
+            background-color: #573b8a; /* Button background color */
+            color: white; /* Button text color */
+            padding: 10px 50px; /* Button padding */
+            border: none; /* Remove button border */
+            border-radius: 5px; /* Add border radius */
+            cursor: pointer; /* Change cursor to pointer on hover */
+            transition: background-color 0.3s ease; /* Smooth transition */
+        }
+
+        #save-btn:hover {
+            background-color: #6d44b8; /* Change button background color on hover */
+        }
+
+
+    </style>
 </head>
 <body>
+<div class="left">
 <h1>Selfie Capture</h1>
-<video id="video" width="640" height="480" autoplay></video><br>
-<button id="capture-btn">Capture</button><br>
-<canvas id="canvas" width="640" height="480"></canvas><br>
-<button id="save-btn">Save Selfie</button><br>
+<div id="video-container">
+    <video id="video"  autoplay></video>
+    <button id="capture-btn">Capture</button>
+</div></div>
+<div id="canvas-container-wrapper">
+<div id="canvas-container" >
+    <canvas id="canvas" width="320" height="240"></canvas>
+    <button id="save-btn">Save Selfie</button>
+</div></div>
 <!-- New button for user verification -->
 <div id="user-image-container"></div> <!-- Container to display decrypted image -->
 <script>
@@ -18,7 +122,6 @@
     const canvas = document.getElementById('canvas');
     const captureBtn = document.getElementById('capture-btn');
     const saveBtn = document.getElementById('save-btn');
-
 
     navigator.mediaDevices.getUserMedia({ video: true })
         .then(stream => {
@@ -30,14 +133,14 @@
 
     captureBtn.addEventListener('click', () => {
         canvas.getContext('2d').drawImage(video, 0, 0, canvas.width, canvas.height);
+        canvas.style.display = 'block'; // Show canvas after capturing
+        saveBtn.style.display = 'block'; // Show save button after capturing
     });
 
     saveBtn.addEventListener('click', () => {
         const selfieData = canvas.toDataURL('image/png');
         recognizeAndSaveSelfie(selfieData);
     });
-
-
 
     function recognizeAndSaveSelfie(selfieData) {
         recognizeFace(selfieData)
