@@ -15,6 +15,10 @@ public class Selfie {
     @Lob
     private byte[] encryptedData;
 
+//    @OneToOne(mappedBy = "id")
+//    @JoinColumn(name="complaint_id")
+//    private Complaint complaint;
+
     // Default constructor
     public Selfie() {
     }

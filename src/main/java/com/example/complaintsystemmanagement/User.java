@@ -2,12 +2,15 @@ package com.example.complaintsystemmanagement;
 
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Table(name = "users")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private  Long id;
 
     private String username;
 
@@ -15,7 +18,10 @@ public class User {
     private String address; // New field
     private String phoneNumber; // New field
     private String email;
-    public long getId(){
+
+//    @OneToMany(mappedBy = "user")
+//    private List<Complaint> complaints = new ArrayList<>();
+    public  long getId(){
         return id;
     }
 
@@ -57,4 +63,5 @@ public class User {
     public void setEmail(String email) {
         this.email = email;
     }
+
 }

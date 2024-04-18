@@ -1,13 +1,21 @@
 package com.example.complaintsystemmanagement;
 
-import com.example.complaintsystemmanagement.User;
-import com.example.complaintsystemmanagement.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.http.ResponseEntity;
+
+
 
 @Service
 public class UserService {
+    private static final Logger logger = LoggerFactory.getLogger(UserService.class);
+
 
     @Autowired
     private UserRepository userRepository;
@@ -41,5 +49,34 @@ public class UserService {
     }
     public long getNumberOfUsers() {
         return userRepository.countAllUsers();
+    }
+    public User getCurrentUser() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName();
+        return userRepository.findByUsername(username);
+    }
+    public static class UserNotFoundException extends RuntimeException {
+        public UserNotFoundException(String message) {
+            super(message);
+        }
+    }
+
+    public void updateUserDetails(Long id, String username, String address, String phoneNumber, String email) {
+        User currentUser = userRepository.findById(id).orElse(null);
+        if (currentUser != null) {
+            currentUser.setUsername(username);
+            currentUser.setAddress(address);
+            currentUser.setPhoneNumber(phoneNumber);
+            currentUser.setEmail(email);
+            userRepository.save(currentUser);
+        } else {
+
+            logger.error("User not found with ID: " + id);
+            throw new UserNotFoundException("User not found with ID: " + id);
+        }
+    }
+    public Long getCurrentUserId() {
+        User currentUser = getCurrentUser();
+        return (currentUser != null) ? currentUser.getId() : null;
     }
 }

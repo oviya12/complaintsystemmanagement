@@ -2,6 +2,7 @@ package com.example.complaintsystemmanagement;
 
 import jakarta.persistence.*;
 
+
 @Entity
 @Table(name = "complaint")
 public class Complaint {
@@ -15,6 +16,13 @@ public class Complaint {
     @Column(name = "status")
     private String status;
 
+//    @ManyToOne
+//    @JoinColumn(name = "user_id")
+//    private User user;
+
+//    @OneToOne(mappedBy = "id")
+//    @JoinColumn(name="selfie_id")
+//    private Selfie selfie;
     // Constructors
     public Complaint() {}
 

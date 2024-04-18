@@ -129,4 +129,15 @@ public class ComplaintService {
     public int getNumberOfPendingComplaints() {
         return complaintRepository.countByStatus("Pending");
     }
+
+    public String checkStatus(Long complaintId) {
+        // Assuming your repository method to find complaint by ID returns a Complaint object
+        Complaint complaint = complaintRepository.findById(complaintId).orElse(null);
+
+        if (complaint != null) {
+            return complaint.getStatus(); // Assuming getStatus() returns a String
+        } else {
+            return "Complaint not found"; // Or handle the case where complaint is not found
+        }
+    }
 }

@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>User Profile</title>
+    <style>
+        /* Your CSS styles for the profile page */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(to bottom, #0f0c29, #302b63, #24243e);
+            color: white;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 5px;
+            border-bottom: 1px solid white;
+            width: 100%;
+            max-width: 1200px;
+        }
+
+        .header h1 {
+            margin: 20px;
+        }
+
+        .button {
+            background: none;
+            border: 1px solid white;
+            color: white;
+            cursor: pointer;
+            text-decoration: none;
+            margin-left: 10px;
+            margin-right: 40px;
+            padding: 10px 30px;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        .button:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .content {
+
+            flex-grow: 1;
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            max-width: 1200px;
+        }
+
+        .update-details {
+            width: 45%;
+        }
+
+        .check-status {
+            width: 45%;
+        }
+
+        .user-details {
+            margin-top: 30px;
+        }
+
+        .user-details p {
+            margin-bottom: 10px;
+        }
+
+        .user-details label {
+            display: inline-block;
+            font-weight: bold;
+        }
+
+        .user-details input {
+            width: calc(100% - 130px);
+            padding: 5px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            margin-bottom: 10px;
+        }
+
+        .complaint {
+            display: none; /* Initially hide the complaint div */
+            margin-top: 50px;
+        }
+
+        .button-container {
+            margin-top: 5px;
+        }
+
+        .button-container1 {
+            margin-top: 40px;
+        }
+
+        .chk {
+            margin-left: 30px;
+        }
+        .upt{
+            padding: 10px 30px;
+            font-size: 15px;
+
+        }
+    </style>
+</head>
+<body>
+<div class="header">
+    <h1>User Profile</h1>
+    <div>
+        <a href="/" class="button">Home</a>
+    </div>
+</div>
+
+<div class="content">
+    <div class="update-details">
+        <h2>Update Details</h2>
+        <div class="user-details">
+            <label for="id">ENTER YOUR USER ID:</label><br><br>
+            <input type="text" id="id" name="id" placeholder="USER ID">
+            <br><br>
+            <label for="username">Username:</label><br><br>
+            <input type="text" id="username" name="username" placeholder="username">
+            <br><br>
+            <label for="address">Address:</label><br><br>
+            <input type="text" id="address" name="address" placeholder="address">
+            <br><br>
+            <label for="phoneNumber">Phone Number:</label><br><br>
+            <input type="text" id="phoneNumber" name="phoneNumber" placeholder="phone number">
+            <br><br>
+            <label for="email">Email:</label><br><br>
+            <input type="email" id="email" name="email" placeholder="email">
+            <br><br>
+            <div class="button-container">
+                <button  class="upt" type="button" onclick="updateUserDetails()">Update</button>
+            </div>
+
+        </div>
+    </div>
+    <div class="check-status">
+        <h2>Check Status</h2>
+        <p>Check the status of your complaint here.</p>
+        <div class="button-container1">
+            <a href="javascript:void(0);" class="button" onclick="toggleComplaint()">Check Status</a>
+            <div id="complaint" class="complaint">
+                <h2>Enter Complaint ID</h2>
+                <form onsubmit="event.preventDefault(); checkComplaintStatus();">
+                    <div class="compid">
+                        <label for="complaintId">Complaint ID:</label>
+                        <input type="text" id="complaintId" name="complaintId" required>
+                        <button type="submit" class="chk">Check Status</button>
+                    </div>
+                </form>
+                <br><br>
+
+                <!-- Display the status of the complaint here -->
+                <div id="complaintStatus"></div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<script>
+    function getUserId() {
+        // Get the value of the hidden input field with id "userId"
+        var userId = document.getElementById("id").value;
+        return userId;
+    }
+
+    // Function to handle user details update
+    function updateUserDetails() {
+        var id = getUserId(); // You need to define a function to get the user id
+        var username = document.getElementById("username").value;
+        var address = document.getElementById("address").value;
+        var phoneNumber = document.getElementById("phoneNumber").value;
+        var email = document.getElementById("email").value;
+
+        // Construct the URL with parameters
+        var url = 'api/users/profile?id=' + id +
+            '&username=' + encodeURIComponent(username) +
+            '&address=' + encodeURIComponent(address) +
+            '&phoneNumber=' + encodeURIComponent(phoneNumber) +
+            '&email=' + encodeURIComponent(email);
+
+        // Send a POST request to update user details
+        fetch(url, {
+            method: 'POST'
+        })
+            .then(response => {
+                if (response.ok) {
+                    // If update is successful, reload the page to reflect changes
+                    window.location.reload();
+                } else {
+                    // Handle errors or provide feedback to the user
+                    console.error('Failed to update user details');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+    }
+
+
+    // Function to toggle complaint section visibility
+    function toggleComplaint() {
+        var complaintDiv = document.getElementById("complaint");
+        complaintDiv.style.display = (complaintDiv.style.display === "none") ? "block" : "none";
+    }
+    function checkComplaintStatus() {
+        var complaintId = document.getElementById("complaintId").value;
+
+        // Send a GET request to check complaint status
+        fetch('/api/users/check-status?complaintId=' + complaintId)
+            .then(response => {
+                if (response.ok) {
+                    return response.text();
+                } else {
+                    throw new Error('Failed to check complaint status');
+                }
+            })
+            .then(status => {
+                // Display the status of the complaint
+                var statusElement = document.getElementById("complaintStatus");
+                statusElement.innerHTML = "Status: " + status;
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+    }
+</script>
+</body>
+</html>

@@ -134,6 +134,9 @@
 <div class="header">
     <h1>Complaint Registration Portal</h1>
     <div>
+        <p style="color: white; margin-right: 20px;">REFERENCE NUMBER: <span th:text="${userId}"></span></p>
+
+        <a href="/profile" class="button">Profile</a>
         <a href="/helpline" class="button">Helpline</a>
         <a href="/contact" class="button">Contact Us</a>
     </div>
@@ -151,7 +154,7 @@
         <h2>Total Trusted Users</h2>
         <p><span th:text="${numberOfUsers}">0</span></p>
     </div><div class="image-container">
-    <img src="image.png" alt="Large Image" class="page-image">
+    <img src="/image.png" alt="Large Image" class="page-image">
 </div>
 </div>
 

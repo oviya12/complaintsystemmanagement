@@ -1,6 +1,9 @@
 package com.example.complaintsystemmanagement;
 
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -13,6 +16,8 @@ public class ComplaintController {
 
     @Autowired
     private ComplaintService complaintService;
+
+
 
     @Autowired
     private UserService userService;
@@ -39,14 +44,18 @@ public class ComplaintController {
 
     @GetMapping("/homepage")
     public String showHomePage(Model model) {
-        int numberOfResolvedComplaints = complaintService.getNumberOfResolvedComplaints();
-        int numberOfPendingComplaints = complaintService.getNumberOfPendingComplaints();
-        long numberOfUsers = userService.getNumberOfUsers();
-        model.addAttribute("numberOfResolvedComplaints", numberOfResolvedComplaints);
-        model.addAttribute("numberOfPendingComplaints", numberOfPendingComplaints);
-        model.addAttribute("numberOfUsers", numberOfUsers);
-        return "homepage";
+
+            int numberOfResolvedComplaints = complaintService.getNumberOfResolvedComplaints();
+            int numberOfPendingComplaints = complaintService.getNumberOfPendingComplaints();
+            long numberOfUsers = userService.getNumberOfUsers();
+            model.addAttribute("numberOfResolvedComplaints", numberOfResolvedComplaints);
+            model.addAttribute("numberOfPendingComplaints", numberOfPendingComplaints);
+            model.addAttribute("numberOfUsers", numberOfUsers);
+            return "homepage";
+
     }
+
+
 
     @GetMapping("/submit-complaint")
     public String showSubmitComplaintForm(Model model) {
@@ -62,6 +71,11 @@ public class ComplaintController {
     public String helpline(Model model) {
         model.addAttribute("pageTitle", "Helpline");
         return "helpline"; // Assuming you have a contact.html template
+    }
+    @GetMapping("/profile")
+    public String profile(Model model) {
+        model.addAttribute("pageTitle", "Profile");
+        return "profile"; // Assuming you have a contact.html template
     }
     @GetMapping("/capture-selfie")
     public String capture(Model model) {
