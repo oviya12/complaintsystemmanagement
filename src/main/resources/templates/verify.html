@@ -72,7 +72,7 @@
     const userDetailsContainer = document.getElementById('user-details-container');
 
     verifyBtn.addEventListener('click', () => { // Event listener for user verification
-        const selfieId = prompt('Enter the selfie ID:');
+        const selfieId = prompt('Enter the complaint ID:');
         if (selfieId) {
             fetch(`/selfie/${selfieId}`, {
                 method: 'GET',
@@ -87,7 +87,7 @@
                     console.error('Error decrypting selfie:', error);
                 });
         } else {
-            alert('Please enter a valid selfie ID.');
+            alert('Please enter a valid complaint ID.');
         }
     });
 

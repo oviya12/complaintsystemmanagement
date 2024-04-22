@@ -1,3 +1,4 @@
+
 package com.example.complaintsystemmanagement;
 
 import jakarta.servlet.http.HttpSession;
@@ -10,12 +11,15 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
+import java.util.Map;
 
 @Controller
 public class ComplaintController {
 
     @Autowired
     private ComplaintService complaintService;
+
+    @Autowired ComplaintRepository complaintRepository;
 
 
 
@@ -45,13 +49,13 @@ public class ComplaintController {
     @GetMapping("/homepage")
     public String showHomePage(Model model) {
 
-            int numberOfResolvedComplaints = complaintService.getNumberOfResolvedComplaints();
-            int numberOfPendingComplaints = complaintService.getNumberOfPendingComplaints();
-            long numberOfUsers = userService.getNumberOfUsers();
-            model.addAttribute("numberOfResolvedComplaints", numberOfResolvedComplaints);
-            model.addAttribute("numberOfPendingComplaints", numberOfPendingComplaints);
-            model.addAttribute("numberOfUsers", numberOfUsers);
-            return "homepage";
+        int numberOfResolvedComplaints = complaintService.getNumberOfResolvedComplaints();
+        int numberOfPendingComplaints = complaintService.getNumberOfPendingComplaints();
+        long numberOfUsers = userService.getNumberOfUsers();
+        model.addAttribute("numberOfResolvedComplaints", numberOfResolvedComplaints);
+        model.addAttribute("numberOfPendingComplaints", numberOfPendingComplaints);
+        model.addAttribute("numberOfUsers", numberOfUsers);
+        return "homepage";
 
     }
 
@@ -87,25 +91,37 @@ public class ComplaintController {
         model.addAttribute("pageTitle", "Verify User");
         return "verify"; // Assuming you have a contact.html template
     }
+    @GetMapping("/confirmation")
+    public String confirmation(@RequestParam(name = "complaintId") Long complaintId,Model model) {
+        model.addAttribute("complaintId", complaintId);
+        model.addAttribute("pageTitle", "Confirmation");
+        return "confirmation";
+    }
 
 
 
     @PostMapping("/submit-complaint")
-    public String submitComplaint(@ModelAttribute("complaint") Complaint complaint) {
+    public String submitComplaint(@ModelAttribute("complaint") Complaint complaint, Model model) {
         try {
-            complaintService.createComplaint(complaint);
-            return "redirect:/homepage";
+            Map<String, Object> result = complaintService.createComplaint(complaint);
+            Complaint savedComplaint = (Complaint) result.get("complaint");
+            Long complaintId = (Long) result.get("complaintId");
+
+            // Add the complaint ID to the model
+            model.addAttribute("complaintId", complaintId);
+
+            return "/confirmation";
         } catch (Exception e) {
             return "error";
         }
     }
-
     @GetMapping("/admin")
     public String showAdminPage(Model model) {
         List<Complaint> complaints = complaintService.getAllComplaints();
         model.addAttribute("complaints", complaints);
         return "admin";
     }
+
 
     @PostMapping("/admin/update-status")
     public String updateComplaintStatus(@RequestParam("id") Long id, @RequestParam("status") String status) {

@@ -9,4 +9,6 @@ public interface ComplaintRepository extends JpaRepository<Complaint, Long> {
 
     // Method to count complaints by status
     int countByStatus(String status);
+    Long findIdByTitle(String title);
+
 }

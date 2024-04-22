@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Confirmation</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(to bottom, #0f0c29, #302b63, #24243e); /* Background gradient */
+            color: white; /* Text color */
+            min-height: 100vh; /* Minimum height of viewport */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column; /* Arrange elements in column */
+        }
+
+        h1 {
+            margin-top: 20px; /* Add margin on top */
+            text-align: center; /* Center align the text */
+        }
+
+        p {
+            text-align: center; /* Center align the text */
+            margin-bottom: 20px; /* Add margin at the bottom */
+        }
+
+        a {
+            text-decoration: none; /* Remove underline */
+            background-color: #573b8a; /* Background color */
+            color: white; /* Text color */
+            padding: 10px 20px; /* Add padding */
+            border-radius: 5px; /* Add border radius */
+            transition: background-color 0.3s ease; /* Smooth transition */
+        }
+
+        a:hover {
+            background-color: #6d44b8; /* Change background color on hover */
+        }
+    </style>
+</head>
+<body>
+<h1>Your complaint has been successfully submitted</h1>
+<h2>Your complaint id is: <span th:text="${complaintId}"></span></h2>
+<p>(Please note this ID and keep it safe. It will be useful in further investigation and verification purposes.)</p>
+<p>We will reach you out soon.</p>
+<a href="homepage">Back to Home</a>
+</body>
+</html>

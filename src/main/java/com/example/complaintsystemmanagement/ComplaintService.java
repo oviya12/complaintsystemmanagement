@@ -13,9 +13,7 @@ import org.bouncycastle.crypto.paddings.PaddedBufferedBlockCipher;
 import org.bouncycastle.crypto.params.KeyParameter;
 import java.nio.charset.StandardCharsets;
 import java.security.NoSuchAlgorithmException;
-import java.util.Base64;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -52,22 +50,30 @@ public class ComplaintService {
         complaintRepository.save(complaint);
     }
 
-    public Complaint createComplaint(Complaint complaint) throws Exception {
-        complaint.setStatus("Pending");
-        // Generate a random 6-digit ID
-        Random random = new Random();
-        long id = 100000 + random.nextInt(900000); // Generates a random number between 100000 and 999999
+    public Long getComplaintIdByTitle(String title) {
+        // Retrieve the ID of the complaint by its title
 
-        while(complaintRepository.existsById(id)) {
-            id = 100000 + random.nextInt(900000); // Regenerate ID if it already exists
-        }
-        complaint.setId(id);
-
-
-        String twofishEncryptedDescription = encryptWithTwofish(complaint.getDescription());
-        complaint.setDescription(twofishEncryptedDescription);
-        return complaintRepository.save(complaint);
+        return complaintRepository.findIdByTitle(title);
     }
+
+
+
+        public Map<String, Object> createComplaint(Complaint complaint) throws Exception {
+            complaint.setStatus("Pending");
+            String twofishEncryptedDescription = encryptWithTwofish(complaint.getDescription());
+            complaint.setDescription(twofishEncryptedDescription);
+
+            // Save the complaint to get the generated ID
+            Complaint savedComplaint = complaintRepository.save(complaint);
+            Long complaintId = savedComplaint.getId();
+
+            // Create a map to hold the complaint and its ID
+            Map<String, Object> result = new HashMap<>();
+            result.put("complaint", savedComplaint);
+            result.put("complaintId", complaintId);
+            return result;
+        }
+
 
     public List<Complaint> getAllDecryptedComplaints() {
         List<Complaint> complaints = complaintRepository.findAll();

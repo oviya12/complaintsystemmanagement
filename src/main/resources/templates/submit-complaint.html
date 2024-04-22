@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 
@@ -121,20 +122,20 @@
 
 <!-- Complaint Submission Form -->
 <div class="content">
-<form action="#" th:action="@{/submit-complaint}" th:object="${complaint}" method="post">
-    <div class="title">
-    <label  for="title">Subject:</label>
-        <br><br>
-    <input type="text" id="title" th:field="*{title}" required/><br/>
-    </div>
-    <div class="desc">
-    <label for="description">Describe Your Complaint:   (Please mention all the necessary details (Date of Occurrence,Place,Time, Person Involved,etc,...If Any) </label><br/>
-        <br><br>
-    <textarea id="description" th:field="*{description}" required></textarea><br/>
-        <!-- Other form fields -->
-    </div><br><br>
-    <div class="btn">
-        <button type="submit">Submit</button></div>
+    <form action="#" th:action="@{/submit-complaint}" th:object="${complaint}" method="post">
+        <div class="title">
+            <label  for="title">Subject:</label>
+            <br><br>
+            <input type="text" id="title" th:field="*{title}" required/><br/>
+        </div>
+        <div class="desc">
+            <label for="description">Describe Your Complaint:   (Please mention all the necessary details (Date of Occurrence,Place,Time, Person Involved,etc,...If Any) </label><br/>
+            <br><br>
+            <textarea id="description" th:field="*{description}" required></textarea><br/>
+            <!-- Other form fields -->
+        </div><br><br>
+        <div class="btn">
+            <button type="submit" >Submit</button></div>
 
     </form>
 </div>
@@ -142,14 +143,6 @@
 
 </body>
 </html>
-
-
-    <!-- New input field for encryption key -->
-
-
-    <!-- Check if success message exists -->
-    <!-- Check if success message exists and display it in a dialog box -->
-
 
 
 

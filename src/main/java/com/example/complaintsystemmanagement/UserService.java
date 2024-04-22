@@ -1,14 +1,12 @@
 package com.example.complaintsystemmanagement;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.http.ResponseEntity;
 
 
 
@@ -46,6 +44,20 @@ public class UserService {
             return passwordEncoder.matches(password, user.getPassword());
         }
         return false;
+    }
+
+    public Long getUserIdByUsername(String username) {
+        // Retrieve user by username from the database
+        User user = userRepository.findByUsername(username);
+
+        // Check if user exists
+        if (user != null) {
+            // Return user's ID
+            return user.getId();
+        } else {
+            // User not found
+            return null;
+        }
     }
     public long getNumberOfUsers() {
         return userRepository.countAllUsers();

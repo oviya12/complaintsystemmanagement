@@ -84,7 +84,10 @@
         }
         th:first-child,
         td:first-child {
-            width: 15%; /* Increase width of first column */
+            width: 5%; /* Increase width of first column */
+        }
+        th:nth-child(2){
+            width:1%;
         }
 
         th:last-child,
@@ -99,6 +102,7 @@
 <table>
     <thead>
     <tr>
+        <th style="width: 100px;">ID</th>
         <th style="width: 100px;">Title</th>
         <th style="width: 100px;">Description</th>
         <th style="width: 80px;">Status</th>
@@ -109,7 +113,9 @@
     <tbody>
     <!-- Iterate over complaints and display them -->
     <tr th:each="complaint : ${complaints}">
+        <td th:text="${complaint.id}">ID</td>
         <td th:text="${complaint.title}">Title</td>
+
         <td>
             <a th:href="@{/admin/view-complaint/{id}(id=${complaint.id})}" target="_blank" class="button">Click to see complaint</a>
         </td>
