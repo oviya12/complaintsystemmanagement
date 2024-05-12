@@ -16,14 +16,7 @@ public class Complaint {
     @Column(name = "status")
     private String status;
 
-//    @ManyToOne
-//    @JoinColumn(name = "user_id")
-//    private User user;
 
-//    @OneToOne(mappedBy = "id")
-//    @JoinColumn(name="selfie_id")
-//    private Selfie selfie;
-    // Constructors
     public Complaint() {}
 
     public Complaint(String title, String description, String status) {

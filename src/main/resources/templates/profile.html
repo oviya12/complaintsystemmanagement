@@ -113,7 +113,7 @@
 <div class="header">
     <h1>User Profile</h1>
     <div>
-        <a href="/" class="button">Home</a>
+        <a href="/homepage" class="button">Home</a>
     </div>
 </div>
 
@@ -121,9 +121,8 @@
     <div class="update-details">
         <h2>Update Details</h2>
         <div class="user-details">
-            <label for="id">ENTER YOUR USER ID:</label><br><br>
-            <input type="text" id="id" name="id" placeholder="USER ID">
-            <br><br>
+
+
             <label for="username">Username:</label><br><br>
             <input type="text" id="username" name="username" placeholder="username">
             <br><br>
@@ -174,37 +173,37 @@
     }
 
     // Function to handle user details update
-    function updateUserDetails() {
-        var id = getUserId(); // You need to define a function to get the user id
-        var username = document.getElementById("username").value;
-        var address = document.getElementById("address").value;
-        var phoneNumber = document.getElementById("phoneNumber").value;
-        var email = document.getElementById("email").value;
+   function updateUserDetails() {
+    var username = document.getElementById("username").value;
+    var address = document.getElementById("address").value;
+    var phoneNumber = document.getElementById("phoneNumber").value;
+    var email = document.getElementById("email").value;
 
-        // Construct the URL with parameters
-        var url = 'api/users/profile?id=' + id +
-            '&username=' + encodeURIComponent(username) +
-            '&address=' + encodeURIComponent(address) +
-            '&phoneNumber=' + encodeURIComponent(phoneNumber) +
-            '&email=' + encodeURIComponent(email);
+    // Construct the URL with parameters
+    var url = 'api/users/profile?' +
+        'username=' + encodeURIComponent(username) +
+        '&address=' + encodeURIComponent(address) +
+        '&phoneNumber=' + encodeURIComponent(phoneNumber) +
+        '&email=' + encodeURIComponent(email);
 
-        // Send a POST request to update user details
-        fetch(url, {
-            method: 'POST'
-        })
-            .then(response => {
-                if (response.ok) {
-                    // If update is successful, reload the page to reflect changes
-                    window.location.reload();
-                } else {
-                    // Handle errors or provide feedback to the user
-                    console.error('Failed to update user details');
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-            });
-    }
+    // Send a POST request to update user details
+    fetch(url, {
+        method: 'POST'
+    })
+    .then(response => {
+        if (response.ok) {
+            // If update is successful, reload the page to reflect changes
+            window.location.reload();
+            alert("Profile Successfully updated");
+        } else {
+            // Handle errors or provide feedback to the user
+            console.error('Failed to update user details');
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+    });
+}
 
 
     // Function to toggle complaint section visibility

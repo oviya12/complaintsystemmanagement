@@ -69,22 +69,22 @@ public class ComplaintController {
     @GetMapping("/contact")
     public String contact(Model model) {
         model.addAttribute("pageTitle", "Contact Us");
-        return "contact"; // Assuming you have a contact.html template
+        return "contact";
     }
     @GetMapping("/helpline")
     public String helpline(Model model) {
         model.addAttribute("pageTitle", "Helpline");
-        return "helpline"; // Assuming you have a contact.html template
+        return "helpline";
     }
     @GetMapping("/profile")
     public String profile(Model model) {
         model.addAttribute("pageTitle", "Profile");
-        return "profile"; // Assuming you have a contact.html template
+        return "profile";
     }
     @GetMapping("/capture-selfie")
     public String capture(Model model) {
         model.addAttribute("pageTitle", "Capture Selfie");
-        return "capture-selfie"; // Assuming you have a contact.html template
+        return "capture-selfie";
     }
     @GetMapping("/verify")
     public String verify(Model model) {

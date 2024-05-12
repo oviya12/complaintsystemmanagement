@@ -42,13 +42,12 @@ public class UserController {
 
     // Handle POST request to update user details
     @PostMapping("/profile")
-    public ResponseEntity<Void> updateUserDetails(@RequestParam("id") Long id,
-                                                  @RequestParam("username") String username,
+    public ResponseEntity<Void> updateUserDetails(@RequestParam("username") String username,
                                                   @RequestParam("address") String address,
                                                   @RequestParam("phoneNumber") String phoneNumber,
                                                   @RequestParam("email") String email) {
         // Update the user details in the database
-        userService.updateUserDetails(id, username, address, phoneNumber, email);
+        userService.updateUserDetails(username, address, phoneNumber, email);
 
         // Return response indicating success
         return ResponseEntity.ok().build();

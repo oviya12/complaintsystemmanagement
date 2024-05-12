@@ -73,8 +73,8 @@ public class UserService {
         }
     }
 
-    public void updateUserDetails(Long id, String username, String address, String phoneNumber, String email) {
-        User currentUser = userRepository.findById(id).orElse(null);
+    public void updateUserDetails(String username, String address, String phoneNumber, String email) {
+        User currentUser = userRepository.findByUsername(username);
         if (currentUser != null) {
             currentUser.setUsername(username);
             currentUser.setAddress(address);
@@ -83,8 +83,8 @@ public class UserService {
             userRepository.save(currentUser);
         } else {
 
-            logger.error("User not found with ID: " + id);
-            throw new UserNotFoundException("User not found with ID: " + id);
+            logger.error("User not found with username: " +username );
+            throw new UserNotFoundException("User not found with username: " + username);
         }
     }
     public Long getCurrentUserId() {
